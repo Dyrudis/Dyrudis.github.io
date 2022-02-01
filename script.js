@@ -69,7 +69,6 @@
             guessWord += e.key;
             refreshGuess();
         }
-        console.log(foundWord);
     });
 
     refreshGuess();
