@@ -1,5 +1,5 @@
 html {
-    background-color: black;
+    background-color: rgb(27, 27, 27);
     color: white;
     font-family: Arial, Helvetica, sans-serif;
 }
@@ -13,18 +13,18 @@ body {
 
 #guess {
     display: flex;
-    gap: 3px;
-    margin: 5px 0 10px 0;
+    gap: 5px;
+    margin: 5px 0 5px 0;
 }
 
-#words {
+#previousGuesses, #futureGuesses {
     display: flex;
     flex-direction: column;
 }
 
-.word {
+.guess {
     display: flex;
-    gap: 3px;
+    gap: 5px;
     margin: 5px 0;
 }
 
@@ -38,6 +38,7 @@ span {
     justify-content: center;
     align-items: center;
     text-transform: capitalize;
+    user-select: none;
 }
 
 span.correct {  
@@ -46,4 +47,93 @@ span.correct {
 
 span.include {
     background-color: rgb(235, 170, 50);
+}
+
+span.false {
+    background-color: rgb(26, 26, 26);
+}
+
+#errors {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    row-gap: 10px;
+}
+
+.error {
+    padding: 0 15px;
+    height: 60px;
+    border-radius: 5px;
+    border-left: 5px solid rgb(207, 76, 72);
+    background-color: rgb(58, 54, 54);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    box-sizing: border-box;
+    font-size: 18px;
+    transition: all .5s;
+}
+
+#win {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(34, 31, 31);
+    padding: 25px 40px;
+    box-sizing: border-box;
+    border-radius: 7.5px;
+}
+
+#winText {
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 30px;
+    cursor: pointer;
+}
+
+#keys {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    user-select: none;
+}
+
+#keys > div {
+    display: flex;
+    gap: 1px;
+}
+
+#keys > div > span {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    transition: background-color .05s;
+    font-size: 20px;
+}
+
+#keys > div > span:hover {
+    filter: brightness(90%);
+}
+
+#keys > div > [data-key="Enter"], #keys > div > [data-key="Backspace"] {
+    width: 101px;
 }
