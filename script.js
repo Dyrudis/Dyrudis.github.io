@@ -78,6 +78,7 @@ class Wordle {
                 foundWord: this.foundWord,
                 time: (new Date() - this.startTime) / 1000,
                 attempts: this.attempts,
+                hint: hint,
             };
         }
 
@@ -121,6 +122,7 @@ class Wordle {
             if (result.success) {
                 if (result.guessed) {
                     win(result.foundWord, result.time, result.attempts);
+                    document.getElementById("guess").remove();
                 } else if (result.attempts >= NbOfTries) {
                     lose(word, result.time);
                     document.getElementById("guess").remove();
