@@ -97,7 +97,6 @@ class Wordle {
     const guess = document.getElementById("guess");
 
     const word = words[Math.floor(Math.random() * words.length)];
-    console.log(word);
 
     let wordle = new Wordle(word, dictionnary);
     const NbOfTries = 6;
