@@ -16,14 +16,14 @@ class Wordle {
         if (guess[0] !== this.foundWord[0]) {
             return {
                 success: false,
-                message: 'The first letter of the word must be "' + this.foundWord[0].toUpperCase() + '".',
+                message: 'La première lettre du mot doit être "' + this.foundWord[0].toUpperCase() + '".',
             };
         }
         if (guess.length != this.word.length) {
-            return { success: false, message: "The word must be " + this.word.length + " letters long." };
+            return { success: false, message: "Le mot doit contenir " + this.word.length + " lettres." };
         }
         if (!this.dictionnary.includes(guess)) {
-            return { success: false, message: "The word must be a word from the dictionnary." };
+            return { success: false, message: "Le mot doit être dans le dictionnaire." };
         }
 
         let hint = [];
@@ -81,7 +81,14 @@ class Wordle {
             };
         }
 
-        return { success: true, guessed: false, foundWord: this.foundWord, hint: hint, attempts: this.attempts };
+        return {
+            success: true,
+            guessed: false,
+            foundWord: this.foundWord,
+            hint: hint,
+            attempts: this.attempts,
+            time: (new Date() - this.startTime) / 1000,
+        };
     }
 }
 
@@ -115,29 +122,29 @@ class Wordle {
                 if (result.guessed) {
                     win(result.foundWord, result.time, result.attempts);
                 } else if (result.attempts >= NbOfTries) {
-                    alert("You lose!");
+                    lose(word, result.time);
+                    document.getElementById("guess").remove();
                 } else {
-                    console.log(result);
-                    let guess = document.createElement("p");
-                    guess.classList.add("guess");
-                    result.hint.forEach((elem) => {
-                        let span = document.createElement("span");
-                        span.innerText = elem.letter;
-                        span.classList.add("letter");
-                        if (elem.position) {
-                            span.classList.add("correct");
-                        } else if (elem.include) {
-                            span.classList.add("include");
-                        }
-                        guess.appendChild(span);
-                    });
-                    document.getElementById("previousGuesses").appendChild(guess);
                     foundWord = result.foundWord;
                     guessWord = foundWord;
                     refreshGuess();
                     document.getElementById("futureGuesses").firstChild?.remove();
                     guessWord = word[0];
                 }
+                let guess = document.createElement("p");
+                guess.classList.add("guess");
+                result.hint.forEach((elem) => {
+                    let span = document.createElement("span");
+                    span.innerText = elem.letter;
+                    span.classList.add("letter");
+                    if (elem.position) {
+                        span.classList.add("correct");
+                    } else if (elem.include) {
+                        span.classList.add("include");
+                    }
+                    guess.appendChild(span);
+                });
+                document.getElementById("previousGuesses").appendChild(guess);
             } else {
                 errorMessage(result.message);
             }
@@ -194,13 +201,28 @@ class Wordle {
         let minutes = Math.floor(time / 60);
         let seconds = Math.floor(time % 60);
         document.getElementById("win").style.display = "block";
-        document.getElementById("winText").innerText = `Vous avez gagné !\n\nLe mot était "${foundWord.toUpperCase()}".\n\nVous l'avez trouvé en ${minutes} minute${minutes > 1 ? "s" : ""} et ${seconds} seconde${seconds > 1 ? "s" : ""}\navec ${attempts} essai${attempts > 1 ? "s" : ""} !`;
+        document.getElementById(
+            "winText"
+        ).innerText = `Vous avez gagné !\n\nLe mot était "${foundWord.toUpperCase()}".\n\nVous l'avez trouvé en ${minutes} minute${
+            minutes > 1 ? "s" : ""
+        } et ${seconds} seconde${seconds > 1 ? "s" : ""}\navec ${attempts} essai${attempts > 1 ? "s" : ""} !`;
     }
 
-    // Utilisation du 
+    function lose(word, time) {
+        let minutes = Math.floor(time / 60);
+        let seconds = Math.floor(time % 60);
+        document.getElementById("win").style.display = "block";
+        document.getElementById(
+            "winText"
+        ).innerText = `Vous avez perdu...\n\nLe mot était "${word.toUpperCase()}".\n\nTemps : ${minutes} minute${
+            minutes > 1 ? "s" : ""
+        } et ${seconds} seconde${seconds > 1 ? "s" : ""}.`;
+    }
+
+    // Utilisation du
     document.querySelectorAll(".key").forEach((elem) => {
         elem.addEventListener("click", (e) => {
-            document.dispatchEvent(new KeyboardEvent('keydown', {'key': e.target.getAttribute("data-key")}));
+            document.dispatchEvent(new KeyboardEvent("keydown", { key: e.target.getAttribute("data-key") }));
         });
     });
 })();
