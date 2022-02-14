@@ -29,6 +29,32 @@ function showScore(score) {
     document.getElementById("score").innerText = score;
 }
 
+function death(item, score) {
+    let div = document.createElement("div");
+    div.classList.add("death");
+    let img = document.createElement("img");
+    img.src = "resources/items/" + item.id.padStart(3, "0") + ".png";
+    div.appendChild(img);
+    let p = document.createElement("p");
+    p.innerText = score;
+    div.appendChild(p);
+    document.body.appendChild(div);
+    document.getElementById("next").style.display = "none";
+    document.getElementById("items").style.display = "none";
+    document.getElementById("life").style.display = "none";
+    document.getElementById("descritpiondiv").style.display = "none";
+    document.getElementById("score").style.display = "none";
+
+    document.querySelector(".death > p").style.fontSize = document.querySelector(".death").offsetWidth / 10.5 + "px";
+    document.querySelector(".death > p").style.width = document.querySelector(".death").offsetWidth / 3.5 + "px";
+    // On resize
+    window.addEventListener("resize", () => {
+        console.log("resize");
+        document.querySelector(".death > p").style.fontSize = document.querySelector(".death").offsetWidth / 10.5 + "px";
+        document.querySelector(".death > p").style.width = document.querySelector(".death").offsetWidth / 3.5 + "px";
+    });
+}
+
 function play() {
     let audio = new Audio("resources/next.wav");
     audio.volume = 0.15;
@@ -67,16 +93,23 @@ function play() {
                 let audio = new Audio("resources/thumbs up.wav");
                 audio.volume = 0.07;
                 audio.play();
-                score+= 100;
+                score += 100;
                 showScore(score);
             } else {
                 div.classList.add("bad");
-                let audio = new Audio("resources/hurt" + (Math.round(Math.random() * 2) + 1) + ".wav");
-                audio.volume = 0.1;
-                audio.play();
-                showLife(--life);
-                score -= 10;
-                showScore(score);
+                if (--life <= 0) {
+                    let audio = new Audio("resources/death.wav");
+                    audio.volume = 0.1;
+                    audio.play();
+                    death(item, score);
+                } else {
+                    let audio = new Audio("resources/hurt" + (Math.round(Math.random() * 2) + 1) + ".wav");
+                    audio.volume = 0.1;
+                    audio.play();
+                    showLife(life);
+                    score -= 10;
+                    showScore(score);
+                }
             }
             div.style.cursor = "default";
             div.removeEventListener("click", click);
