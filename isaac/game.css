@@ -1,5 +1,10 @@
 @font-face {
     font-family: "Upheaval";
+    src: url("resources/upheavtt.ttf");
+}
+
+@font-face {
+    font-family: "PixelMplus";
     src: url("resources/PixelMplus10-Regular-edited.ttf");
 }
 
@@ -50,6 +55,7 @@ body {
 }
 
 #description {
+    font-family: "PixelMplus", "Roboto", sans-serif;
     font-size: 36px;
     height: fit-content;
     width: 100%;
