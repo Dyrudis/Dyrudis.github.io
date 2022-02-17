@@ -1,4 +1,4 @@
-let life = 12;
+let life = 6;
 let maxlife = life % 2 ? life + 1 : life;
 let score = 0;
 
@@ -116,6 +116,7 @@ function play() {
         }
 
         let img = document.createElement("img");
+        img.classList.add("item_img")
         let src = "resources/items/" + item.id.padStart(3, "0") + ".png";
         fetch(src).then((res) => {
             if (res.ok) {
@@ -126,6 +127,12 @@ function play() {
         });
 
         div.appendChild(img);
+        
+        let pedestal = document.createElement("img");
+        pedestal.classList.add("item_pedestal")
+        pedestal.src = "resources/pedestal.png";
+        div.appendChild(pedestal);
+
         div.appendChild(p);
 
         document.getElementById("items").appendChild(div);
